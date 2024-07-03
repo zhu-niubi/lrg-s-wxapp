@@ -1,3 +1,3 @@
-# ngj-wxapp
+# lrg-wxapp
 
-ngj门店端
+lrg小程序门店端
