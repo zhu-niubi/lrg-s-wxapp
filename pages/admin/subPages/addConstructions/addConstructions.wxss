@@ -1,0 +1,11 @@
+.information:nth-last-child(2) {
+  border: 0;
+}
+
+.van-sidebar-item--selected {
+  border-color: var(--sidebar-selected-border-color, #ff7416) !important;
+}
+
+.my .van-sidebar-item--selected {
+  border-color: var(--sidebar-selected-border-color, #fff) !important;
+}

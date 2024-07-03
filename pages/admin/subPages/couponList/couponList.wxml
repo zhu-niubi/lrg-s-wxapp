@@ -1,0 +1,121 @@
+<!-- myCard.wxml -->
+<view class="page-1">
+    <!-- 导航栏 -->
+    <!-- <navigation>卡券管理</navigation> -->
+
+    <view class="page-top-search page-position-fixed-t page-1">
+        <view class="flex">
+            <van-icon name="arrow-left" class="flex-1 page-size-4 page-margin-t-xl" bind:click="onClickLeft" />
+            <!-- 搜索 -->
+
+            <van-search class="flex-11" custom-class="vant-custom" shape="round" value="{{ searchValue }}" placeholder="请输入手机号" use-action-slot bind:change="onChange" data-value="searchValue" data-name="phoneNumber">
+                <view slot="action" bind:tap="onClick">筛选
+                    <van-icon name="filter-o" />
+                </view>
+            </van-search>
+        </view>
+    </view>
+
+    <view style="padding-top:{{navbarHeight}}px;"> </view>
+
+    <!-- 搜索 -->
+    <!-- <van-search shape="round" background="#ff7416" value="{{ searchValue }}" placeholder="请输入手机号" use-action-slot bind:change="onChange" data-value="searchValue" data-name="phoneNumber">
+        <view slot="action" bind:tap="onClick">筛选
+            <van-icon name="filter-o" />
+        </view>
+    </van-search> -->
+
+    <view class="page-content" style="height: {{windowHeight}}px;">
+        <!-- 信息 -->
+        <block wx:if="{{couponInfoList && couponInfoList.length > 0 }}">
+            <van-divider contentPosition="center">共 {{totalNumber}} 张</van-divider>
+            <!--内容部分 -->
+            <view class="page-padding-b-md">
+                <view wx:for="{{ couponInfoList }}" wx:key="index" wx:for-index="index">
+
+                    <view class="card page-bj-gray card-top-padding card-bj-img" style="background-image: url('{{item.couponTemplateImage ||''}}');">
+
+                        <view class="clear-float font-color-fff">
+                            <view class="float-left" bindtap='handleIsExpand' data-index="{{index}}">卡券详情
+                                <van-icon name="{{item.isExpand ? 'arrow-up' : 'arrow-down' }}" />
+                            </view>
+                        </view>
+                    </view>
+                    <!-- 使用说明-->
+                    <view class="page-round-xs page-lucency page-padding-a-sm {{item.isExpand ? '' : 'isExpand'}}">
+                        <view class="page-size-1 page-padding-b-xs">
+                            <span>卡号：{{item.code}}</span>
+                        </view>
+
+                        <view class="page-size-1 page-padding-b-xs">
+                            <span>订单号：{{item.orderNumber}}</span>
+                        </view>
+
+                        <!-- <view class="page-size-1 page-padding-b-xs">
+                            <span>门店：{{item.storeName}}</span>
+                        </view> -->
+
+                        <view class="page-size-1 page-padding-b-xs">
+                            <span> 用户ID：{{item.userId}} </span>
+                            <span class="page-margin-l-sm"> 用户名：{{item.userName}} </span>
+                        </view>
+
+                        <view class="page-size-1 page-padding-b-xs">
+                            <span> 卡券模板：{{item.couponTemplateName}} </span>
+                            <span class="page-margin-l-sm"> 使用状态：{{item.status === 1 ? '未使用' : item.status === 2 ? '已使用' : '已失效'}} </span>
+                        </view>
+
+                        <view class="page-size-1 page-padding-b-xs">
+                            <span>卡券说明：{{item.memo||'卡券说明xxx x'}}</span>
+                        </view>
+                        <view class="page-size-1 page-padding-b-xs">
+                            限 {{item.createdAt}} 至 {{item.deadline}} 使用
+                        </view>
+                    </view>
+                </view>
+
+                <!-- 见底提示 -->
+                <van-divider wx:if="{{isTouchGround}}" contentPosition="center">我是有底线的~</van-divider>
+            </view>
+        </block>
+
+
+        <block wx:else>
+            <van-empty description="暂无数据" />
+        </block>
+    </view>
+</view>
+
+<!-- 弹框 -->
+<!-- <van-toast id="van-toast" custom-class="van-toast-box" /> -->
+
+<!-- isPopup -->
+<van-popup class="page-position-r" show="{{ isPopup }}" round position="bottom" custom-style="height: 50%" bind:close="onPopupClose">
+
+    <view class="page-size-3 bold page-text-align-center page-padding-y-lg">全部筛选</view>
+
+    <!-- 卡号 - 用户ID-->
+    <view class="flex">
+        <van-search shape="round" left-icon="" value="{{ codeValue }}" placeholder="请输入卡券编码" bind:change="onFilterChange" data-value="codeValue" />
+        <van-search shape="round" left-icon="" value="{{ userIdValue }}" placeholder="请输入用户ID" bind:change="onFilterChange" data-value="userIdValue" />
+    </view>
+
+
+    <!-- 根据模板-使用状态搜索 -->
+    <view class=" page-padding-y-md">
+        <van-dropdown-menu active-color="#ff7416" direction="up">
+            <van-dropdown-item value="{{ dropdownValue }}" options="{{ dropdownOption }}" bind:change="onFilterChange" data-value="dropdownValue" />
+            <van-dropdown-item value="{{ useStatusValue }}" options="{{ useStatusList }}" bind:change="onFilterChange" data-value="useStatusValue" />
+        </van-dropdown-menu>
+    </view>
+
+
+
+    <!-- 操作按钮 -->
+    <view class="flex">
+        <van-goods-action>
+            <van-goods-action-button color="#ff7416" text="重置" type="warning" bind:click="onReset" />
+            <van-goods-action-button color="#ff7416" text="查看" bind:click="onSubmit" />
+        </van-goods-action>
+    </view>
+</van-popup>

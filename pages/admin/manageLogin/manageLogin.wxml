@@ -1,0 +1,36 @@
+<!-- index.wxml -->
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation>管理登录</navigation>
+    <!-- 头像授权/展示 -->
+    <block wx:if="{{userInfo}}">
+        <view class="top-card" style="{{bgImg}}">
+            <view class="page-top-padding" style="padding-top:{{navbarHeight}}px;"> </view>
+            <!--内容部分 -->
+            <view class="page-position">
+                <!-- 会员权益 -->
+                <view class="card">
+                    <form catchsubmit="formSubmit">
+                        <!-- 用户头像 -->
+                        <view class="page-text-align-center" bindtap='onChooseAvatar' data-name="avatarUrl">
+                            <image class="userinfo-avatar-image" src="{{userInfo.image || userInfo.avatarUrl}}" mode="aspectFill"></image>
+                        </view>
+                        <view class="information flex">
+                            <view class="flex-2">账号：</view>
+                            <input class="input flex-10 page-text-align-left" password type="text" name="username" />
+                        </view>
+                        <view class="information flex">
+                            <view class="flex-2">密码：</view>
+                            <input class="input flex-10 page-text-align-left" password type="text" name="password" />
+                        </view>
+
+                        <view class="page-text-align-center  page-margin-y-md">
+                            <button class="mg-btn primary mg-btn-theme-w" form-type="submit">登录</button>
+                        </view>
+                    </form>
+                </view>
+
+            </view>
+        </view>
+    </block>
+</view>

@@ -1,0 +1,52 @@
+<!-- index.wxml -->
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation></navigation>
+    <view class="top-card round">
+        <view class="page-top-padding flex" style="padding-top:{{navbarHeight}}px;">
+            <!-- 用户头像 -->
+            <view class="flex-3 clear-float">
+                <view bindtap="gotoUserInfo" class="float-left ">
+                    <image class="userinfo-avatar-image" src="{{ userInfo.image || userInfo.avatarUrl || '/images/moren.png' }}" mode="aspectFill"></image>
+                </view>
+                <!-- 用户昵称 -->
+                <view class="float-left page-padding-l-sm">
+                    <text class="font-color-fff bold">
+                        {{ userInfo.name || userInfo.nickname || userInfo.nickName || userInfo.username }}
+                    </text>
+                    <!-- <text class="page-gray" >{{userInfo.phoneNumber || '您还没有绑定手机号～'}}</text> -->
+                </view>
+            </view>
+        </view>
+        <!-- 公告 -->
+        <view class="page-position-notice" wx:if="{{noticeData}}" >
+            <van-notice-bar  left-icon="volume-o" text="{{noticeData}}" />
+        </view>
+        <!--内容部分 -->
+        <view class="page-position">
+            <!-- 管理详情 -->
+            <view class="card">
+                <view class="page-margin-y-xs flex"  bindtap="gotoManageLogin">
+                    <view class="page-size-3 bold">应用管理</view>
+                    <view class="page-color-gray page-size-1">
+                        <van-icon name="arrow" />
+                    </view>
+                </view>
+                <van-grid column-num="{{navList.length > 4 ? 4 : navList.length}}" border="{{ false }}">
+                    <van-grid-item icon="{{itemNav.icon}}" text="{{itemNav.name}}" wx:for="{{ navList }}" wx:for-item="itemNav" wx:for-index="indexNav" wx:key="indexNav" bindtap="gotoApps" data-url="{{itemNav.url}}" />
+                </van-grid>
+            </view>
+
+            <!--  消费卡券 -->
+            <view class="card">
+                <view class="page-margin-y-xs">
+                    <view class="page-size-3 bold">管理操作</view>
+                </view>
+                <van-grid icon-size="48" column-num="2" border="{{ false }}" custom-class="page-padding-y-md">
+                    <van-grid-item icon="{{itemBuild.icon}}" text="{{itemBuild.name}}" wx:for="{{ constructionList }}" wx:for-item="itemBuild" wx:for-index="indexBuild" wx:key="indexBuild" bindtap="gotoServePage" data-id="{{ itemBuild.id }}" icon-class="page-padding-y-md" />
+                </van-grid>
+            </view>
+
+        </view>
+    </view>
+</view>

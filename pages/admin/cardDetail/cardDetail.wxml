@@ -1,0 +1,59 @@
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation>个人卡券</navigation>
+    <!-- 卡券信息 -->
+    <view class="top-card">
+        <view class="page-top-padding" style="padding-top:{{navbarHeight}}px;"> </view>
+        <view class="page-position">
+            <!-- 卡卷 -->
+            <view class="card">
+                <view class="flex">
+                    <view class="page-size-3 bold">卡券详情</view>
+                </view>
+                <view class="card page-bj-gray card-top-padding card-bj-img" style="background-image: url('{{cardInfo.couponTemplateImage ||''}}');">
+
+                    <view class="clear-float font-color-fff">
+                        <view class="float-left" bindtap='handleIsExpand'>使用说明
+                        
+                            <van-icon name="{{isExpand ? 'arrow-up' : 'arrow-down' }}" />
+                        </view>
+
+                    </view>
+                </view>
+                <!-- 使用说明-->
+                <view class="page-round-xs page-lucency page-padding-a-sm {{isExpand ? '' : 'isExpand'}}">
+                    <view class="page-size-1 page-padding-b-xs">
+                        <span>{{cardInfo.memo||'卡券说明xxx x'}}</span>
+                    </view>
+                    <view class="page-size-1 page-padding-b-xs" wx:if="{{cardInfo.applyStoreList.length}}">
+                        限 {{cardInfo.applyStoreList}} 使用
+                    </view>
+                    <view class="page-size-1 page-padding-b-xs">
+                        限 {{cardInfo.createdAt}} 至 {{cardInfo.deadline}} 使用
+                    </view>
+                </view>
+                <!-- 卡片 -->
+                <view class="page-margin-y-md">
+                    <view class="page-padding-y-xs"><span class="bold">用户ID：</span>{{cardInfo.userId}}</view>
+                    <view class="page-padding-y-xs"><span class="bold">用户名：</span>{{cardInfo.userName}}</view>
+                    <view class="page-padding-y-xs"><span class="bold">卡券ID：</span>{{cardInfo.id}}</view>
+                    <view class="page-padding-y-xs"><span class="bold">卡号：</span>{{cardInfo.code}}</view>
+                    <view class="page-padding-y-xs"><span class="bold">来源：</span>{{cardInfo.source === 1 ? '发卡' : cardInfo.source === 2 ? '订单' : cardInfo.source === 3 ? '权益卡' :""}}</view>
+                    <view class="page-padding-y-xs"><span class="bold">使用状态：</span>{{cardInfo.status === 1 ? '未使用' : cardInfo.status === 2 ? '已使用' : '已失效'}} </view>
+                    <view class="page-padding-y-xs"><span class="bold">卡券模板名称：</span>{{cardInfo.couponTemplateName ||'xxx券'}}</view>
+                    <view class="page-padding-y-xs" wx:if="{{cardInfo.applyStoreList.length}}">
+                        <span class="bold">适用门店：</span>限 {{cardInfo.applyStoreList}} 使用
+                    </view>
+                    <view class="page-padding-y-xs"><span class="bold">备注：</span>{{cardInfo.memo||'卡券说明xxx x'}}</view>
+                    <view class="page-padding-y-xs"><span class="bold">时间：</span>限 {{cardInfo.createdAt}} 至 {{cardInfo.deadline}} 使用</view>
+                </view>
+
+                <!-- 确认按钮 -->
+                <view class="page-margin-y-md ">
+                    <button class="mg-btn mg-btn-theme-w" bindtap="handleBack">取消</button>
+                    <button class="mg-btn primary mg-btn-theme-w " bindtap="handleOk">确认</button>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

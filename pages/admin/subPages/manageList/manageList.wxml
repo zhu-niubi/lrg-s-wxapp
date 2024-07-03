@@ -1,0 +1,19 @@
+<!-- myCard.wxml -->
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation>应用管理</navigation>
+    <view class="page-padding-x-md" style="height: {{windowHeight}}px;">
+        <!-- 信息 -->
+        <block wx:if="{{manageList}}">
+            <view>
+                <view style="padding-top:{{navbarHeight}}px;"> </view>
+                <!--内容部分 -->
+
+                <van-grid clickable column-num="2">
+                    <van-grid-item wx:for="{{ manageList }}" wx:for-item="itemManage" wx:for-index="indexManage" wx:key="indexManage" icon="{{itemManage.icon}}" link-type="navigateTo" url="{{itemManage.url}}" text="{{ itemManage.name}}" />
+                </van-grid>
+
+            </view>
+        </block>
+    </view>
+</view>

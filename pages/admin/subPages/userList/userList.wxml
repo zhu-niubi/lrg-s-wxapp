@@ -1,0 +1,61 @@
+<!-- myCard.wxml -->
+<view class="page-1">
+    <!-- 导航栏 -->
+    <!-- <navigation>用户管理</navigation> -->
+    <view class="page-top-search page-position-fixed-t page-1">
+        <view class="flex">
+            <van-icon name="arrow-left" class="flex-1 page-size-4 page-margin-t-xl" bind:click="onClickLeft" />
+            <!-- 搜索 -->
+            <van-search class="flex-11" custom-class="vant-custom" shape="round" value="{{ searchValue }}" placeholder="请输入手机号" bind:search="onSearch" bind:change="onChange" />
+        </view>
+    </view>
+
+    <view class="page-padding-x-md ">
+        <view style="padding-top:{{navbarHeight}}px;"> </view>
+
+        <!-- 信息 -->
+        <block wx:if="{{userInfoList && userInfoList.length > 0 }}">
+            <!--内容部分 -->
+            <view class="page-padding-b-md">
+                <view class="card " wx:for="{{ userInfoList }}" wx:for-item="itemUser" wx:for-index="indexUser" wx:key="indexUser" bindtap="gotoCouponPage" data-userid="{{itemUser.id}}">
+                    <view class="car-centent flex">
+                        <view class="flex-1">
+                            <van-image fit="cover" round width="5rem" height="5rem" src="{{itemUser.avatarUrl}}" />
+                        </view>
+                        <view class="flex-2">
+                            <view>
+                                <span class="bold page-size-3">{{itemUser.nickname}}</span>
+                            </view>
+                            <view class="page-size-1 page-margin-y-xs">
+                                <span> 用户ID：{{itemUser.id}} </span>
+                                <span class="page-margin-l-sm">姓名：{{ itemUser.name}}</span>
+                            </view>
+
+                            <view class=" page-size-1 page-margin-y-xs">
+                                <span>性别：{{itemUser.gender == 2 ? '女' : '男'}}</span>
+                                <span class="page-margin-l-sm">生日：{{ itemUser.birthday}}</span>
+                            </view>
+
+                            <view class=" page-size-1 page-margin-y-xs">
+                                <span>地区：{{itemUser.country}} {{itemUser.province}} {{itemUser.city}} {{itemUser.area}}</span>
+                            </view>
+
+                            <view class="page-size-1 page-color-gray page-margin-y-xs">手机号：{{itemUser.phoneNumber}}</view>
+                        </view>
+                    </view>
+                </view>
+
+                <!-- 见底提示 -->
+                <van-divider wx:if="{{isTouchGround}}" contentPosition="center">我是有底线的~</van-divider>
+            </view>
+        </block>
+
+
+        <block wx:else>
+            <van-empty description="暂无数据" />
+        </block>
+    </view>
+</view>
+
+<!-- 弹框 -->
+<van-toast id="van-toast" custom-class="van-toast-box" />

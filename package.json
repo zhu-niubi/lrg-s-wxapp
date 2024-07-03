@@ -1,0 +1,19 @@
+{
+  "name": "ngj-wxapp-store",
+  "version": "1.0.0",
+  "description": "纳管家小程序",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://code.nalinv.group/pengxiaoyan/ngj-wxapp-store.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/runtime": "^7.22.15",
+    "@vant/weapp": "^1.10.3"
+  }
+}

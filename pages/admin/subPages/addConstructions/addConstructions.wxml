@@ -1,0 +1,191 @@
+<!-- index.wxml -->
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation>{{constructionInfo.id ? '修改施工单' : '创建施工单'}}</navigation>
+    <view class="page-content page-padding-b-lg" style="padding-top:{{navbarHeight}}px;">
+        <!--内容部分 -->
+        <view class="card ">
+            <form catchsubmit="formSubmit">
+                <view class="information flex" bindtap="handleUserCarDialog">
+                    <view>用户汽车 *：</view>
+                    <view class="input flex">
+                        <input disabled type="text" value="{{userCarName ? userCarName :constructionInfo.carBrandName ? constructionInfo.carBrandName + ' ' + constructionInfo.carName :''}}" name='userCarId' 
+                        placeholder="请选择用户汽车" />
+                        <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                    </view>
+                </view>
+                <view class="information flex">
+                    <view>公里数 *：</view>
+                    <view class="input flex">
+                        <input type="text" value="{{kilometer}}" name='kilometer' placeholder="请输入公里数" />
+                        <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                    </view>
+                </view>
+                <view class="information flex" bindtap="{{constructionId ? '' : 'showProductPopup'}}">
+                    <view>施工产品 *：</view>
+                    <view class=" input flex">
+                        <view>{{activeName ? activeName : constructionInfo.productName }}</view>
+                        <van-icon class="page-size-3 page-color-gray" name="arrow" wx:if="{{!constructionId}}" />
+                    </view>
+                </view>
+                <view wx:for="{{activeList}}" wx:for-item="itemActive" wx:key="indexActive" wx:for-index="indexActive">
+                    <view class="information">
+                        <view class="flex"><span><span class="page-theme-color">{{itemActive.name}}</span> 施工部位 *：</span>
+                            <!-- 全选 -->
+                            <van-cell title="全选" border="{{false}}" wx:if="{{!constructionId}}">
+                                <van-switch slot="right-icon" active-color="#ff7416" size="48rpx" checked="{{ itemActive.checkedAll }}" bind:change="oncheckAllChange" data-index="{{indexActive}}" class="page-margin-l-xs "/>
+                            </van-cell>
+                        </view>
+                        <view class="page-margin-y-md" >
+                            <view wx:if="{{!itemActive.checkedAll || itemActive.checkedAll === false}}">
+                                <!-- 部位 -->
+                                <van-checkbox-group direction="horizontal" value="{{ itemActive.constructionPart }}" data-index="{{indexActive}}" bind:change="onChangeConstructionPart">
+                                    <van-checkbox disabled="{{constructionInfo.id}}" icon-size="48rpx" shape="square" custom-class="page-margin-y-xs" checked-color="#ff7416" wx:for="{{itemActive.constructionPartList}}" wx:for-item="itemConstructionPart" wx:key="indexConstructionPart" name="{{itemConstructionPart.id}}">{{itemConstructionPart.name}}</van-checkbox>
+                                </van-checkbox-group>
+                            </view>
+
+                            <!-- 技师/膜卷/消耗米数 -->
+                            <view wx:if="{{itemActive.selection.length > 0}}">
+                                <view wx:for="{{itemActive.selection}}" wx:for-item="itemSelection" wx:key="indexSelection" wx:for-index="indexSelection">
+                                    <view>
+                                        <view class="information bold">{{itemSelection.name}}:</view>
+                                        <!-- 技师 -->
+                                        <view class=" flex page-color-gray" data-selectionIndex="{{indexSelection}}" data-activeIndex="{{indexActive}}" bindtap="handleEmployeeDialog">
+                                            <view>技师：</view>
+                                            <view class="input flex">
+                                                <input disabled type="text" value="{{itemSelection.employee.name || ''}}" placeholder="请选择技师" />
+                                                <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                                            </view>
+                                        </view>
+                                        <!-- 膜卷号 -->
+                                        <view class=" flex page-color-gray" data-selectionIndex="{{indexSelection}}" data-activeIndex="{{indexActive}}" data-productId="{{itemActive.value}}" bindtap="handleRollDialog">
+                                            <view>膜卷号：</view>
+                                            <view class="input flex">
+                                                <input disabled type="text" value="{{itemSelection.roll.name || ''}}" placeholder="请选择膜卷号" />
+                                                <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                                            </view>
+                                        </view>
+                                        <!-- 消耗米数 -->
+                                        <view class="information flex page-color-gray">
+                                            <view>消耗米数：</view>
+                                            <view class="input flex">
+                                                <input type="number" data-selectionIndex="{{indexSelection}}" data-activeIndex="{{indexActive}}" bindinput="handleInputLength" type="text" value="{{itemSelection.length || ''}}" placeholder="请输入消耗米数" />
+                                                <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                                            </view>
+                                        </view>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+                <view class="information">
+                    <view class="flex">
+                        <view>缺陷部位：</view>
+                        <van-cell title="全选" border="{{false}}" >
+                            <van-switch slot="right-icon" active-color="#ff7416" size="48rpx" checked="{{ checkedDefectPart }}" bind:change="oncheckPartChange"  class="page-margin-l-xs "/>
+                        </van-cell>
+                    </view>
+                    <view class="page-margin-y-md">
+                        <van-checkbox-group direction="horizontal" value="{{ defectPart}}" bind:change="onChangeDefectPart">
+                            <van-checkbox icon-size="48rpx" shape="square" custom-class="page-margin-y-xs" checked-color="#ff7416" wx:for="{{defectPartList}}" wx:for-item="itemDefectPart" wx:key="indexDefectPart" name="{{itemDefectPart.id}}">{{itemDefectPart.name}}</van-checkbox>
+                        </van-checkbox-group>
+                    </view>
+                </view>
+                <view class="information">
+                    <view>缺陷原因：</view>
+                    <view class="page-margin-y-md">
+                        <van-checkbox-group direction="horizontal" value="{{ defectType}}" bind:change="onChangeDefectType">
+                            <van-checkbox icon-size="48rpx" shape="square" custom-class="page-margin-y-xs" checked-color="#ff7416" wx:for="{{defectTypeList}}" wx:for-item="itemDefectType" wx:key="indexDefectType" name="{{itemDefectType.id}}">{{itemDefectType.name}}</van-checkbox>
+                        </van-checkbox-group>
+                    </view>
+                </view>
+                <view class="information">
+                    <view>缺陷图片：</view>
+                    <view class="page-margin-y-md">
+                        <van-uploader image-fit="aspectFill" preview-size="98px" multiple="true" file-list="{{ defectImages }}" bind:after-read="afterReadImage" bind:delete="delDefectImages" />
+                    </view>
+                </view>
+                <view class="information flex" bindtap="handleTimePopup">
+                    <view>预计完成时间 *：</view>
+                    <view class="input flex">
+                        <input disabled type="text" value="{{expectCompleteShowData}}" placeholder="请选择时间" />
+                        <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                    </view>
+                </view>
+                <view class="information">
+                    <van-cell-group border="{{false}}">
+                        <van-field name="memo" value="{{ memo}}" label="备注" type="textarea" placeholder="请输入备注" autosize border="{{ false }}" />
+                    </van-cell-group>
+                </view>
+
+
+                <!-- 添加按钮 -->
+                <view class="page-footer-1">
+                    <button class="mg-btn primary mg-btn-theme-w" form-type="submit">提交</button>
+                </view>
+            </form>
+        </view>
+    </view>
+</view>
+
+<van-dialog use-slot title="用户车库" show="{{ isShowUserCar }}" show-cancel-button bind:confirm="handleRadioConfirm" closeOnClickOverlay>
+    <van-search shape="round" value="{{ phoneNumberVal }}" placeholder="请输入手机号/车牌号/车架号" bind:search="onSearchUserCar" bind:change="onSearchUserCar" />
+    <view class="dialogHieght-md">
+        <van-radio-group value="{{ radioVal }}" bind:change="onRadioChange">
+            <van-cell-group>
+                <van-cell wx:for="{{userCarList}}" wx:for-item="itemUserCar" wx:for-index="indexUserCar" wx:key="indexUserCar" title="{{'车牌: '+ itemUserCar.carNumber +' 车型：' + itemUserCar.carBrand +' '+ itemUserCar.carName + ' 车架号: '+itemUserCar.VIN}}" clickable data-id="{{itemUserCar.id}}" data-name="{{itemUserCar.carBrand + ' '+ itemUserCar.carName}}" data-userId="{{itemUserCar.userId}}" bind:click="onRadioClick">
+                    <van-radio slot="right-icon" name="{{itemUserCar.id}}" />
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+    </view>
+</van-dialog>
+
+<van-dialog use-slot title="技师" show="{{ isShowEmployee }}" show-cancel-button bind:confirm="handleRadioConfirm" closeOnClickOverlay>
+    <van-search shape="round" value="{{ phoneNumberVal }}" placeholder="请输入手机号/姓名" bind:search="onSearchEmployee" bind:change="onSearchEmployee" />
+    <view class="dialogHieght-md">
+        <van-radio-group data-name="{{employeeData.id + ' '+ employeeData.name}}" value="{{ employeeData.id }}" bind:change="onEmployeeChange">
+            <van-cell-group>
+                <van-cell wx:for="{{employeeList}}" wx:for-item="itemEmployee" wx:for-index="indexEmployee" wx:key="indexEmployee" title="{{itemEmployee.id +' 姓名：' + itemEmployee.name }}" clickable data-id="{{itemEmployee.id}}" data-name="{{itemEmployee.id + ' '+ itemEmployee.name}}" bind:click="onEmployeeClick">
+                    <van-radio slot="right-icon" name="{{itemEmployee.id}}" />
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+    </view>
+</van-dialog>
+
+<!-- 膜卷 -->
+<van-dialog use-slot title="膜卷号" show="{{ isShowRoll }}" bind:confirm="handleRadioConfirm" closeOnClickOverlay>
+    <van-search shape="round" value="{{ phoneNumberVal }}" placeholder="请输入膜卷号" bind:search="onSearchRoll" bind:change="onSearchRoll" />
+    <view class="dialogHieght-md">
+        <van-radio-group data-name="{{activeList[activeIndex].selection[selectIndex].roll.name}}" value="{{ activeList[activeIndex].selection[selectIndex].roll.id }}" bind:change="onRollChange">
+            <van-cell-group>
+                <van-cell wx:for="{{activeList[activeIndex].rollList}}" wx:for-item="itemRoll" wx:for-index="indexRoll" wx:key="indexRoll" title="{{itemRoll.rollNumber +' ' + itemRoll.productName }}" clickable data-id="{{itemRoll.id}}" data-name="{{itemRoll.rollNumber}}" bind:click="onRollClick">
+                    <van-radio slot="right-icon" name="{{itemRoll.id}}" />
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+    </view>
+</van-dialog>
+
+
+
+<!-- 弹出层 -->
+<!-- 产品选择 -->
+<van-popup closeable custom-style="height: 80%" position="bottom" show="{{ isShowProductPopup  }}" bind:close="onCloseProduct">
+
+    <view class="page-text-align-center page-size-3 page-margin-y-md">产品选择</view>
+    <van-tree-select main-active-class="page-bj-transparent" items="{{ productTypeList }}" main-active-index="{{ productTypeIndex }}" bind:click-nav="onClickProType">
+        <view slot="content">
+            <van-tree-select class="my" items="{{ productsList }}" main-active-index="{{ productModelIndex }}" active-id="{{ activeId }}" bind:click-nav="onClickProModel" bind:click-item="onClickProductItem" />
+        </view>
+    </van-tree-select>
+
+</van-popup>
+
+<!-- 预计完成时间选择 -->
+<van-popup custom-style="height: 50%" position="bottom" round show="{{ isShowTimePopup }}" bind:close="onCloseProductTime">
+    <view class="page-text-align-center page-size-3 page-margin-y-md">时间选择</view>
+    <van-datetime-picker type="date" value="{{ expectComplete }}" min-date="{{ minDate }}" formatter="{{ formatter }}" bind:confirm="handleTimeOk" bind:cancel="onCloseProductTime" />
+</van-popup>

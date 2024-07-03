@@ -1,0 +1,6 @@
+<!--pages/admin/subPages/WriteOffItems/WriteOffItems.wxml-->
+<view class="page">
+    <image class="background" src="http://backend-ngj.oss-cn-shanghai.aliyuncs.com/fe5ae537405d6678f5298745012d175.png" mode="aspectFill" />
+    <navigation backNum ="{{2}}"/>
+    
+</view>

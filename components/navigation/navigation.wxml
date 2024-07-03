@@ -1,0 +1,21 @@
+<view class="mg-navbar">
+    <!-- 状态栏占位 -->
+    <!-- <view class="mg-statusBar" style="height: {{statusBarHeight}}px;"></view> -->
+    <!-- 导航栏 -->
+    <!-- <view class="nav">
+        <view class="nav-item-1 left" style="border: 1px solid red; ">
+            <van-icon name="arrow-left" size="48rpx" bind:click="gotoBack" />
+            <button plain=" {{true}}" class="btn iconfont icon-fanhuijiantou page-padding-a-sm" bindtap='gotoBack'></button>
+        </view>
+        <view class=" nav-item-2 middle">
+            <slot></slot>
+        </view>
+        <view class="nav-item-3 right"></view>
+    </view> -->
+    <van-nav-bar bind:click-left="gotoBack" custom-class="page-color-tm" border="{{false}}">
+        <van-icon name="arrow-left" size="48rpx" slot="left" class="page-padding-a-sm" />
+        <view slot="title" class="page-color-black">
+            <slot></slot>
+        </view>
+    </van-nav-bar>
+</view>

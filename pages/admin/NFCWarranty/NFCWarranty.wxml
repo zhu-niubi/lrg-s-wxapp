@@ -1,0 +1,94 @@
+<!--pages/admin/NFCWarranty/NFCWarranty.wxml-->
+<view class="page">
+    <navigation>NKD质保</navigation>
+    <view style="padding-top:{{navbarHeight}}px;" />
+    
+    <block>
+        <view class=" page-content-t ">
+            <!-- <view class="card" wx:for="{{tabList}}" wx:for-item="itemtab" wx:for-index="indextab" wx:key="indextab">
+                <view style="font-weight: bolder; text-align: center;" data-id="{{itemtab.id}}" bindtap="goWarranty">
+                    {{itemtab.name}}
+                </view>
+            </view> -->
+            <view class="card" wx:for="{{tabList}}" wx:for-item="itemtab" wx:for-index="indextab" wx:key="indextab">
+                <view style="font-weight: bolder; text-align: center;">
+                    <text>{{itemtab.name}}</text>
+                </view>
+                <view wx:if="{{itemtab.id == 1}}" >
+                    <text style="font-size: small;">将手机贴近手机背面NFC感应区，调整接触位置;识别成功前，请勿将手机离开卡片~~~</text>
+                    <view style="font-size: 3em; text-align: center; padding-top: 0.5em;">
+                        <!-- <button
+                            class="btn"
+                            bindtap="onValidate"
+                            >
+                            连接NFC
+                        </button> -->
+                        <!-- <button
+                            wx:if="{{ vs == true }}"
+                            class="btn"
+                            bindtap="onWriteNdefInfo"
+                            >
+                            写入
+                        </button> -->
+                        <!-- <van-icon name="success" /> -->
+                        <!-- <van-icon name="weapp-nav" /> -->
+                    </view>
+                </view>
+                <view wx:if="{{itemtab.id == 2}}">
+                    <view class="content-container">
+                        <view class="result-container">
+                            <view class="content-row">
+                                <text class="label">车主姓名：</text>
+                                <text class="value">{{ qualityAssuranceData.userName }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">手机号：</text>
+                                <text class="value">{{ qualityAssuranceData.phoneNumber }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">车辆型号：</text>
+                                <text class="value">{{ qualityAssuranceData.carName || '无' }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">车辆牌号：</text>
+                                <text class="value">{{ qualityAssuranceData.carNumber || '无' }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">车架号码：</text>
+                                <text class="value">{{ qualityAssuranceData.VIN || '无' }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">质保产品：</text>
+                                <text class="value">{{combinedProductNames || '无' }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">施工单号：</text>
+                                <text class="value">{{qualityAssuranceData.code || '无' }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">施工门店：</text>
+                                <text class="value">{{qualityAssuranceData.storeName || '无' }}</text>
+                            </view>
+                            <view class="content-row">
+                                <text class="label">施工日期：</text>
+                                <text class="value">{{ qualityAssuranceData.completeAt || '无' }}</text>
+                            </view>
+                            <view style="text-align: center;">
+                                <!-- <van-button custom-class="page-margin-l-sm" round size="small" color="#ff7416" plain bindtap="writeNfc">
+                                    质保导入
+                                </van-button> -->
+                                <!-- <van-button custom-class="page-margin-l-sm" round size="small" color="#ff7416" plain>
+                                    正在加载NFC...
+                                </van-button> -->
+                            </view>
+                        </view>
+                    </view>
+                </view>
+
+
+            </view>
+        </view>
+    </block>
+
+
+</view>

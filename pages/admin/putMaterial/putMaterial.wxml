@@ -1,0 +1,42 @@
+<!--pages/admin/putMaterial/putMaterial.wxml-->
+<view class="page">
+    <navigation>添加素材</navigation>
+    <view class="title">
+        {{constructionInfo.carName}}
+        <view class="time">
+            上传时间：{{constructionInfo.createdAt}}
+        </view>
+    </view>
+    <view class="content">
+        <view class="title">
+            汽车参数:
+        </view>
+        <view class="desc">
+            <van-field label="汽车品牌" model:value="{{constructionInfo.carBrandName}}"  border="{{ true }}" input-align="center" focus="{{ true }}" disabled/>
+            <van-field  label="车型" model:value="{{constructionInfo.carName}}"  border="{{ true }}" input-align="center" focus="{{ true }}" disabled/>
+            <van-field  label="门店" model:value="{{constructionInfo.storeName}}"  border="{{ true }}" input-align="center" focus="{{ true }}" disabled/>
+        </view>
+
+        <view class="tt" wx:for="{{constructionInfo.newconstructionSku}}" wx:key="indexProType" wx:for-item="itemProType">
+            <view class="title">
+                {{itemProType.productTypeName}}外观:
+            </view>
+            <view class="desc">
+                <van-field label="产品类型" model:value="{{itemProType.productTypeName}}"  border="{{ true }}" input-align="center" focus="{{ true }}" disabled/>
+                <van-field  label="产品系列" model:value="{{itemProType.productModelName}}"  border="{{ true }}" input-align="center" focus="{{ true }}" disabled/>
+            </view>
+            <view class="information">
+                <view>
+                    <van-uploader image-fit="aspectFill" preview-size="98px" multiple="true" file-list="{{ materialImg[itemProType.productId] }}" bind:after-read="afterReadImage" bind:delete="delmaterialImg" id="{{itemProType.productId}}"  />
+                </view>
+            </view>
+        </view>
+        
+    </view>
+    <view class="submit">
+        <van-button  custom-style="border-radius: 30rpx; width: 300rpx; margin-bottom: 100rpx" type="default" bindtap="submit">
+            <view class="text">上传案例</view>
+        </van-button>
+    </view>
+    
+</view>

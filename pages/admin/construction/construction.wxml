@@ -1,0 +1,180 @@
+<!-- myCard.wxml -->
+<view class="page-1 page-padding-b-lg">
+    <!-- 导航栏 -->
+    <!-- <navigation>搜索</navigation> -->
+
+    <view class="page-top-search page-position-fixed-t page-1">
+        <view class="flex">
+            <van-icon name="arrow-left" class="flex-1 page-size-4 page-margin-t-xl" bind:click="onClickLeft" />
+            <!-- 搜索 -->
+
+            <van-search class="flex-11" custom-class="vant-custom" shape="round" value="{{ searchValue }}" placeholder="请输入手机号" use-action-slot bind:search="onSearch" bind:change="onSearch">
+                <view slot="action" bind:tap="onFilterClick">筛选
+                    <van-icon name="filter-o" />
+                </view>
+            </van-search>
+        </view>
+    </view>
+
+    <!--内容部分 -->
+
+    <view style="padding-top:{{navbarHeight}}px;"> </view>
+    <block wx:if="{{constructionList.length > 0}}">
+        <view class=" page-content-t ">
+            <view class="page-text-align-center" wx:if="{{isLoading}}">
+                <van-loading size="24px" vertical type="spinner">刷新中...</van-loading>
+            </view>
+            <view class="card" wx:for="{{ constructionList }}" wx:for-item="itemBuild" wx:for-index="indexBuild" wx:key="indexBuild">
+                <view class="page-position-r" data-id="{{itemBuild.id}}" bindtap="handleDetail">
+                    <!-- 内容 -->
+                    <view class="page-margin-y-xs flex page-size-1">
+                        <view class="page-padding-b-xs page-size-2">施工产品:<span class="page-theme-color"> {{itemBuild.productName}}</span></view>
+                        <view>{{
+                            itemBuild.status === 1
+                            ? '待客户确认'
+                            : itemBuild.status === 2
+                            ? '客户已确认'
+                            : itemBuild.status === 3
+                            ? '质检员已确认'
+                            : itemBuild.status === 4
+                            ? '开始施工'
+                            : itemBuild.status === 5
+                            ? '施工完成'
+                            : itemBuild.status === 6
+                            ? '用户已提车确认'
+                            : itemBuild.status === 7
+                            ? '店长已确认'
+                            : ''
+                            }}</view>
+                    </view>
+
+                    <view class=" page-margin-y-xs page-size-1">
+                        <view class="page-margin-y-xs page-padding-b-xs">
+                            <span class="page-color-gray-1">车主姓名：{{itemBuild.userName}}</span>
+                            <span class="page-color-gray-1 page-margin-l-md">手机号：{{itemBuild.phoneNumber}}</span>
+                        </view>
+
+                        <view class="page-margin-y-xs page-padding-b-xs">
+                            <span class="page-color-gray-1">用户车型：{{itemBuild.carName}}</span>
+                            <span class="page-color-gray-1 page-margin-l-md">车牌：{{itemBuild.carNumber}}</span>
+                        </view>
+
+                        <view class="page-margin-y-xs page-padding-b-xs">
+                            <span class="page-color-gray-1">预计完成时间：{{itemBuild.expectComplete}}</span>
+                        </view>
+
+                    </view>
+
+                </view>
+
+
+                <view>
+                    <van-icon wx:if="{{itemBuild.status < 7}}" name="edit" class="page-size-4 page-color-gray page-padding-a-sm " bindtap="handleAddConstructions" data-id="{{itemBuild.id}}" />
+                    <van-icon name="delete-o" class="page-size-4 page-color-gray page-padding-a-sm page-margin-l-xs" bindtap="handleDeleteBuild" data-id="{{itemBuild.id}}" />
+                </view>
+
+
+                <!-- 状态按钮 -->
+                <view class="page-position-b" wx:if="{{itemBuild.statusName}}">
+                    <van-button custom-class="page-margin-l-sm" round size="small" color="#ff7416" plain data-id="{{itemBuild.id}}" bind:click="constructionStartOk" data-status="{{itemBuild.status}}">{{itemBuild.statusName}}</van-button>
+                </view>
+
+                <!-- 质保录入页面跳转 -->
+                <view class="page-position-b" wx:if="{{itemBuild.status === 7}}">
+                    <van-button custom-class="page-margin-l-sm" round size="small" color="#ff7416" plain bindtap="gotoNfc" data-obj="{{ itemBuild }}">质保录入</van-button>
+                </view>
+                <!-- 添加素材 -->
+                <view class="page-position-c" wx:if="{{itemBuild.status < 7}}">
+                    <van-button custom-class="page-margin-l-sm" round size="small" color="#ff7416" plain bindtap="gotoMaterial" data-id="{{ itemBuild.id }}">添加素材</van-button>
+                </view>
+
+                <!-- 定损记录 -->
+                <view class="page-position-c" wx:if="{{itemBuild.status === 7}}">
+                    <van-button custom-class="page-margin-l-sm" round size="small" color="#ff7416" plain bindtap="gotoDamageAssessment" data-data="{{ itemBuild }}">定损记录</van-button>
+                </view>
+
+            </view>
+
+            <!-- 见底提示 -->
+            <van-divider wx:if="{{isTouchGround}}" contentPosition="center">我是有底线的~</van-divider>
+        </view>
+    </block>
+
+    <view wx:else style="height: {{windowHeight}}px;">
+        <van-empty description="暂无相关数据" />
+    </view>
+
+    <!-- 添加按钮 -->
+    <view class="page-footer-1">
+        <button class="mg-btn primary mg-btn-theme-w" bindtap="handleAddConstructions">创建施工单</button>
+    </view>
+</view>
+
+
+
+<!-- isPopup -->
+<van-popup class="page-position-r" show="{{ isPopup }}" round position="bottom" custom-style="height: 50%" bind:close="onPopupClose">
+
+    <view class="page-size-3 bold page-text-align-center page-padding-y-lg">全部筛选</view>
+
+    <!-- 汽车ID-->
+    <view class="flex">
+        <van-search shape="round" left-icon="" value="{{ carNumber }}" placeholder="请输入车牌号" bind:change="onFilterChange" data-value="carNumber" />
+        <van-search shape="round" left-icon="" value="{{ productName }}" placeholder="请选择商品" bind:change="onFilterChange" data-value="productId" bind:focus="productFocus" />
+    </view>
+
+
+    <!-- 操作按钮 -->
+    <view class="flex">
+        <van-goods-action>
+            <van-goods-action-button color="#ff7416" text="重置" type="warning" bind:click="onReset" />
+            <van-goods-action-button color="#ff7416" text="查看" bind:click="onSubmit" />
+        </van-goods-action>
+    </view>
+</van-popup>
+
+
+<van-dialog use-slot title="商品" show="{{ isShowPro }}" show-cancel-button bind:confirm="handleRadioConfirm">
+    <van-search shape="round" value="{{ phoneNumberVal }}" placeholder="请输入产品名" bind:search="onSearchUserCar" bind:change="onSearchUserCar" />
+    <view class="dialogHieght-md">
+        <van-radio-group value="{{ radioVal }}" bind:change="onRadioChange">
+            <van-cell-group>
+                <van-cell wx:for="{{productList}}" wx:for-item="itemPro" wx:for-index="indexPro" wx:key="indexPro" title="{{'产品名称: '+ itemPro.name +' 系列：' + itemPro.productModelName}}" clickable data-id="{{itemPro.id}}" data-name="{{itemPro.name}}" bind:click="onRadioClick">
+                    <van-radio slot="right-icon" name="{{itemPro.id}}" />
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+    </view>
+</van-dialog>
+
+<van-dialog use-slot title="交车确认" show="{{ isShowCarOk }}" show-cancel-button bind:confirm="handleCarOkConfirm">
+    <view class="dialogHieght-md">
+        <view class="page-padding-a-sm page-size-2">
+            <view class="page-size-2 bold">注意事项:</view>
+            <view class="page-color-gray-1 n-gutter-xs">
+                <view>1、补漆、掉漆的部位，施工时可能会出现局部掉漆</view>
+                <view>2、发生碰撞部位，揭膜时可能出现局部掉漆</view>
+                <view>3、安装完成后48小时内不能清洗车身，不能超过80公里/小时高速行驶，避免雨中行驶</view>
+                <view>4、洗车时，避免用力过大地擦洗保护膜的边缘，避免用高压水枪直援冲洗保护膜边緣,避免高压水枪长时间中洗同一个小块区域</view>
+                <view>5、日常清洁维护时不能使用掉色毛巾和其他易掉色物品擦拭</view>
+                <view>6、不可使用吸ー吸附膜表面</view>
+                <view>7、膜面上若有雨渍、鸟屎、虫尸、柏油、空调水或铁锈水等有腐蚀性的污渍，请在24小时内及时清洗</view>
+                <view>8、安装后若膜面有雾感、小水泡，为正常现象，十天左右会自动消失</view>
+                <view>9、安装后三天内若有起边、翘边现象，立即联系施工方回店检查维护</view>
+                <view>
+                    <view>10、建议2-3个月做一次膜面养护</view>
+                    <view>质保范围：</view>
+                    <view>隐形车衣在质保期间：</view>
+                    <view>·不起泡 ·不龟裂 ·不脱胶</view>
+                    <view>在以下非质保范围内造成的损失，将无法承诺质保：</view>
+                    <view>·对隐形车衣不恰当清洗、保养或维护</view>
+                    <view>·事故或人为导致的隐形车衣的损坏</view>
+                    <view class="page-size-2 bold text-red">·本人已确认车辆按照服务内容已全部施工完毕，并检查车辆完好无损，车内无任何物品丢失，同意验收！</view>
+                </view>
+            </view>
+        </view>
+    </view>
+</van-dialog>
+
+
+<van-dialog id="van-dialog" />

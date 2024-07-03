@@ -1,0 +1,82 @@
+/* pages/admin/putMaterial/putMaterial.wxss */
+.page {
+    position: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    background-color: #fff;
+}
+.page .title {
+    margin-top: 170rpx;
+    font-size: 40rpx;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    font-weight: bold;
+
+}
+.page .title .time {
+    margin-top: 30rpx;
+    font-size: 25rpx;
+    text-align: center;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    font-weight: normal;
+    color: #D3D3D3;
+}
+
+.page .content {
+    position: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 50rpx;
+    width: 100%;
+    
+}
+.page .content .title {
+    margin-top: 30rpx;
+    margin-left: 10rpx;
+    font-size: 30rpx;
+    text-align: left;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+    font-weight: bold;
+}
+.page .content .desc {
+    height: 300rpx;
+    width: 100%;
+    margin-top: 30rpx;
+    /* background-color: #fff; */
+    
+}
+.page .content .tt .desc {
+    height: 200rpx;
+    width: 100%;
+    margin-top: 30rpx;
+    /* background-color: #fff; */
+    
+}
+.desc .title_des {
+    margin-top: 30rpx;
+    margin-left: 60rpx;
+    font-size: 30rpx;
+    text-align: left;
+    line-height: 1.5;
+    letter-spacing: 0.08em;
+}
+
+
+.page .submit {
+    margin-top: 40rpx;
+    text-align: center;
+    
+}
+.page .submit .text {
+    font-size: 30rpx;
+    font-weight: bold;
+    letter-spacing: 0.08em;
+}
+
+
+
+

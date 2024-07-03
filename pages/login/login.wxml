@@ -1,0 +1,30 @@
+<view class="page" style="height:{{windowHeight}}px;">
+    <view class="page-bj" style="background-image: url({{bgImg}});">
+        <!-- 导航栏 -->
+        <navigation>登录</navigation>
+        <view class="page-position-auto;">
+            <view class="page-content">
+                <view class="card ">
+                    <view class="page-text-align-center page-size-4 bold">商家后台管理</view>
+                    <view class="page-text-align-center">
+                        <image class="userinfo-avatar-image page-margin-y-md" src="{{userInfo.image || userInfo.avatarUrl || '/images/moren.png'}}" mode="cover"></image>
+                    </view>
+                    <form class="form" catchsubmit="submit">
+                        <view class="information flex">
+                            <span class="flex-2">账号：</span>
+                            <input class="input flex-10 page-text-align-left" name="username" type="text" placeholder="商家账号" />
+                        </view>
+                        <view class="information flex">
+                            <span class="flex-2">密码：</span>
+                            <input class="input flex-10 page-text-align-left" name="password" type="text" password placeholder="商家密码" />
+                        </view>
+
+                        <view class="page-text-align-center  page-margin-y-md">
+                            <button class="mg-btn primary mg-btn-theme-w" form-type="submit">登录</button>
+                        </view>
+                    </form>
+                </view>
+            </view>
+        </view>
+    </view>
+</view>

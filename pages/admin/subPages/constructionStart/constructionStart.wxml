@@ -1,0 +1,80 @@
+<!-- index.wxml -->
+<view class="page">
+  <!-- 导航栏 -->
+  <navigation>{{constructionInfo.status === 3 ? '开始施工' : '施工确认'}}</navigation>
+  <view class="page-content page-padding-b-lg" style="padding-top:{{navbarHeight}}px;">
+    <!--内容部分 -->
+    <view class="card page-margin-b-lg ">
+      <view class="page-margin-b-md " wx:for="{{constructionInfo.newconstructionSku}}" wx:key="index" wx:for-index="index">
+        <view class="page-padding-b-sm">施工产品：<span class="page-theme-color">{{item.productName}}</span></view>
+        <!-- 技师/膜卷/消耗米数 -->
+        <view wx:if="{{item.productPosition.length > 0}}">
+            <view wx:for="{{item.productPosition}}" wx:for-item="itemSelection" wx:key="indexSelection" wx:for-index="indexSelection">
+                <view>
+                    <view class="information bold">{{itemSelection.name}}:</view>
+                    <!-- 技师 -->
+                    <view class=" information-none flex page-color-gray" data-selectionIndex="{{indexSelection}}" data-activeIndex="{{index}}" bindtap="handleEmployeeDialog">
+                        <view>技师：</view>
+                        <view class="input flex">
+                            <input disabled type="text" value="{{itemSelection.employee.name || ''}}" placeholder="请选择技师" />
+                            <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                        </view>
+                    </view>
+                    <!-- 膜卷号 -->
+                    <view class="information flex page-color-gray" data-selectionIndex="{{indexSelection}}" data-activeIndex="{{index}}" data-productId="{{item.productId}}" bindtap="handleRollDialog">
+                        <view>膜卷号：</view>
+                        <view class="input flex">
+                            <input disabled type="text" value="{{itemSelection.roll.name || ''}}" placeholder="请选择膜卷号" />
+                            <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                        </view>
+                    </view>
+                    <!-- 消耗米数 -->
+                    <view class="information flex page-color-gray">
+                        <view>消耗米数：</view>
+                        <view class="input flex">
+                            <input type="number" data-selectionIndex="{{indexSelection}}" data-activeIndex="{{index}}" bindinput="handleInputLength" type="text" value="{{itemSelection.length || ''}}" placeholder="请输入消耗米数" />
+                            <van-icon class="page-size-3 page-color-gray" name="arrow" />
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+      </view>
+
+      <!-- 确认按钮 -->
+      <view class="page-footer-1">
+        <button class="mg-btn primary mg-btn-theme-w" bindtap="submit">{{constructionInfo.status === 3 ? '开始施工' : '施工确认'}}</button>
+      </view>
+
+    </view>
+  </view>
+</view>
+
+<van-dialog use-slot title="技师" show="{{ isShowEmployee }}" show-cancel-button bind:confirm="handleRadioConfirm" closeOnClickOverlay>
+    <van-search shape="round" value="{{ phoneNumberVal }}" placeholder="请输入手机号/姓名" bind:search="onSearchEmployee" bind:change="onSearchEmployee" />
+    <view class="dialogHieght-md">
+        <van-radio-group data-name="{{employeeData.id + ' '+ employeeData.name}}" value="{{ employeeData.id }}" bind:change="onEmployeeChange">
+            <van-cell-group>
+                <van-cell wx:for="{{employeeList}}" wx:for-item="itemEmployee" wx:for-index="indexEmployee" wx:key="indexEmployee" title="{{itemEmployee.id +' 姓名：' + itemEmployee.name }}" clickable data-id="{{itemEmployee.id}}" data-name="{{itemEmployee.id + ' '+ itemEmployee.name}}" bind:click="onEmployeeClick">
+                    <van-radio slot="right-icon" name="{{itemEmployee.id}}" />
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+    </view>
+</van-dialog>
+
+<!-- 膜卷 -->
+<van-dialog use-slot title="膜卷号" show="{{ isShowRoll }}" bind:confirm="handleRadioConfirm" closeOnClickOverlay>
+    <van-search shape="round" value="{{ phoneNumberVal }}" placeholder="请输入膜卷号" bind:search="onSearchRoll" bind:change="onSearchRoll" />
+    <view class="dialogHieght-md">
+        <van-radio-group data-name="{{constructionInfo.newconstructionSku[activeIndex].productPosition[selectIndex].roll.name}}" value="{{ constructionInfo.newconstructionSku[activeIndex].productPosition[selectIndex].roll.id }}" bind:change="onRollChange">
+            <van-cell-group>
+                <van-cell wx:for="{{constructionInfo.newconstructionSku[activeIndex].rollList}}" wx:for-item="itemRoll" wx:for-index="indexRoll" wx:key="indexRoll" title="{{itemRoll.rollNumber +' ' + itemRoll.productName }}" clickable data-id="{{itemRoll.id}}" data-name="{{itemRoll.rollNumber}}" bind:click="onRollClick">
+                    <van-radio slot="right-icon" name="{{itemRoll.id}}" />
+                </van-cell>
+            </van-cell-group>
+        </van-radio-group>
+    </view>
+</van-dialog>
+
+<van-dialog id="van-dialog" />

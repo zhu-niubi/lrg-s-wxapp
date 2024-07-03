@@ -1,0 +1,55 @@
+<!-- myCard.wxml -->
+<view class="page-1">
+    <!-- 导航栏 -->
+    <!-- <navigation>用户管理</navigation> -->
+    <view class="page-top-search page-position-fixed-t page-1">
+        <view class="flex">
+            <van-icon name="arrow-left" class="flex-1 page-size-4 page-margin-t-xl" bind:click="onClickLeft" />
+            <!-- 搜索 -->
+            <van-search class="flex-11" custom-class="vant-custom" shape="round" value="{{ searchValue }}" placeholder="请输入手机号/车牌号/车架号" bind:search="onSearch" bind:change="onChange" />
+        </view>
+    </view>
+
+    <view class="page-padding-x-md page-padding-b-lg" >
+        <view style="padding-top:{{navbarHeight}}px;"> </view>
+
+        <!-- 信息 -->
+        <block wx:if="{{userInfoList && userInfoList.length > 0 }}">
+            <!--内容部分 -->
+            <view class="card" wx:for="{{ userInfoList }}" wx:for-item="itemCar" wx:for-index="indexCar" wx:key="indexCar">
+                <view class="page-padding-b-xs">
+                    <view class="page-padding-b-xs">
+                        <span class="bold page-size-3">{{itemCar.carBrand}} {{ itemCar.carName}}</span>
+                        <span class="page-size-1 page-round-card page-lucency-2">{{itemCar.color}}</span>
+                    </view>
+                    <view class="page-size-1 page-padding-b-xs">
+                    <span>车架号：{{itemCar.VIN}}</span>
+                     <span class="page-round-card page-lucency">车牌：{{itemCar.carNumber}}</span></view>
+                    <view class="page-size-1 page-color-gray page-padding-b-xs">
+                        <span>用户：{{itemCar.userName}} </span>
+                        <span class="page-margin-l-xs">手机号：{{itemCar.phoneNumber}}</span>
+                    </view>
+
+                    <view class="page-size-1 page-color-gray page-padding-b-xs">{{itemCar.createdAt}}</view>
+                </view>
+                <!-- 操作按钮 -->
+                <view class="page-position-y flex-direction">
+                    <van-icon name="edit" class="page-size-4 page-color-gray page-padding-a-sm" bindtap="handleAddCars" data-item="{{itemCar}}" />
+                </view>
+            </view>
+
+            <!-- 添加按钮 -->
+            <view class="page-footer-1">
+                <button class="mg-btn primary mg-btn-theme-w" bindtap="handleAddCars">添加车辆</button>
+            </view>
+        </block>
+
+
+        <block wx:else>
+            <van-empty description="暂无数据" />
+        </block>
+    </view>
+</view>
+
+<!-- 弹框 -->
+<van-toast id="van-toast" custom-class="van-toast-box" />

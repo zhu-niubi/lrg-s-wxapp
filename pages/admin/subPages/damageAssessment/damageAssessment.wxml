@@ -1,0 +1,57 @@
+<!--pages/admin/subPages/damageAssessment/damageAssessment.wxml-->
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation>定损记录</navigation>
+    <view class="page-content page-padding-b-lg" style="padding-top:{{navbarHeight}}px;">
+
+        <view class="card">
+            <view class="information">
+                <view class="flex">
+                    <view>车辆缺陷部位：</view>
+                </view>
+                <view class="page-margin-y-md">
+                    <van-checkbox-group direction="horizontal" value="{{ defectPart}}" bind:change="onChangeDefectPart">
+                        <van-checkbox icon-size="48rpx" shape="square" custom-class="page-margin-y-xs" checked-color="#ff7416" wx:for="{{defectPartList}}" wx:for-item="itemDefectPart" wx:key="indexDefectPart" name="{{itemDefectPart.id}}">{{itemDefectPart.name}}</van-checkbox>
+                    </van-checkbox-group>
+                </view>
+            </view>
+        </view>
+        <view class="card">
+            <view class="information">
+                <view>缺陷图片：</view>
+                <view class="page-margin-y-md">
+                    <van-uploader image-fit="aspectFill" preview-size="98px" multiple="true" file-list="{{ defectImages }}" bind:after-read="afterReadImage" bind:delete="delDefectImages" />
+                </view>
+            </view>
+        </view>
+        <view class="card">
+            <view class="information">
+                <van-cell-group border="{{false}}">
+                    <van-field value="{{ memo}}" label="备注" type="textarea" placeholder="请输入缺陷原因" 
+                    autosize border="{{ false }}" bind:change="onChange"/>
+                </van-cell-group>
+            </view>
+        </view>
+
+        <view style="display: flex;justify-content: center;align-items: center;margin-top: 2rem;">
+            <button class="mg-btn primary mg-btn-theme-w" bindtap="formSubmit">提交</button>
+        </view>
+
+        <view class="card" wx:if="{{lossAssessmentList.length > 0}}">
+            <view class="table">
+                <view class="tr">
+                    <view class="th">定损时间</view>
+                    <view class="th">定损部位</view>
+                    <view class="th">备注</view>
+                </view>
+                <view class="tr" wx:for="{{lossAssessmentList}}" wx:key="index">
+                    <view class="td">{{item.createdAt}}</view>
+                    <view class="td">{{item.productPosition}}</view>
+                    <view class="td">{{item.memo}}</view>
+                </view>
+            </view>
+        </view>
+        
+    </view>
+
+</view>

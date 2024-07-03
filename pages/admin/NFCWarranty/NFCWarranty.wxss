@@ -1,0 +1,31 @@
+/* pages/admin/NFCWarranty/NFCWarranty.wxss */
+.content-container {
+    flex: 1;
+    /* Take up remaining vertical space */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: calc(5vh);
+}
+
+.result-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    /* Increase the vertical gap between content rows */
+}
+
+.content-row {
+    display: flex;
+    align-items: center;
+}
+
+.label {
+    width: 80px;
+    font-weight: bold;
+}
+
+.value {
+    flex-grow: 1;
+    text-decoration: underline;
+}

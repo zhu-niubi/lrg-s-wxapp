@@ -1,0 +1,36 @@
+<!-- index.wxml -->
+<view class="page">
+    <!-- 导航栏 -->
+    <navigation>修改密码</navigation>
+    <!-- 头像授权/展示 -->
+    <block wx:if="{{userInfo}}">
+        <view class="top-card" style="{{bgImg}}">
+            <view class="page-top-padding" style="padding-top:{{navbarHeight}}px;"> </view>
+            <!--内容部分 -->
+            <view class="page-position">
+                <!-- 会员权益 -->
+                <view class="card">
+                    <form catchsubmit="formSubmit">
+                        <!-- 用户头像 -->
+                        <button plain="{{true}}" open-type="chooseAvatar"  class="page-text-align-center page-border-none" bind:chooseavatar="onChooseAvatar" data-name="avatarUrl">
+                            <image class="userinfo-avatar-image" src="{{userInfo.image || userInfo.avatarUrl || '/images/moren.png'}}" mode="aspectFill"></image>
+                        </button>
+                        <view class="information flex">
+                            <view class="flex-3">旧密码：</view>
+                            <input class="input flex-9 page-text-align-left" password type="text" name="oldPassword" />
+                        </view>
+                        <view class="information flex">
+                            <view class="flex-3">新密码：</view>
+                            <input class="input flex-9 page-text-align-left" password type="text" name="newPassword" />
+                        </view>
+
+                        <view class="page-text-align-center  page-margin-y-md">
+                            <button class="mg-btn primary mg-btn-theme-w" form-type="submit">确认</button>
+                        </view>
+                    </form>
+                </view>
+
+            </view>
+        </view>
+    </block>
+</view>
